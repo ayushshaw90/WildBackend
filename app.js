@@ -276,7 +276,7 @@ app.get('/add-bird', (req, res) => {
 
 */
 
-
+/*
 const fishdata = require('./fish.js').fish
 
 app.get('/add-fish', (req, res) => {
@@ -308,7 +308,7 @@ app.get('/add-fish', (req, res) => {
     })
     res.send("success")
 })
-
+*/
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
