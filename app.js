@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require("mongoose")
+const cors = require("cors")
 
 const dbURI = "mongodb+srv://animal:animal-hacks@mflix.b27hn.mongodb.net/animal-hacks?retryWrites=true&w=majority"
 
@@ -132,12 +133,17 @@ const Fish = mongoose.model('Fish', FishSchema);
 
 
 const app = express()
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST']
+}))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 const port = 3001
 
 //routes
 
-app.post('/get-dog', async (req, res) => {
+app.post('/getdog', async (req, res) => {
     console.log(req.body)
     let dogname = req.body.name;
     let found = await Dog.findByName(dogname);
@@ -145,7 +151,7 @@ app.post('/get-dog', async (req, res) => {
     console.log(found);
     res.json({responce: found});
 })
-app.post('/get-cat', async (req, res) => {
+app.post('/getcat', async (req, res) => {
     let catname = req.body.name;
     let found = await Cat.findByName(catname);
     console.log("Cat");
@@ -153,7 +159,7 @@ app.post('/get-cat', async (req, res) => {
     res.json({responce: found});
 })
 
-app.post('/get-bird', async (req, res) => {
+app.post('/getbird', async (req, res) => {
     let birdname = req.body.name;
     let found = await Bird.findByName(birdname);
     console.log("Bird");
@@ -161,7 +167,7 @@ app.post('/get-bird', async (req, res) => {
     res.json({responce: found});
 })
 
-app.post('/get-fish', async (req, res) => {
+app.post('/getfish', async (req, res) => {
     let fishname = req.body.name;
     let found = await Fish.findByName(fishname);
     console.log("Fish");
@@ -170,8 +176,8 @@ app.post('/get-fish', async (req, res) => {
 })
 
 
-
 /*
+const dogsdata = require("./dogs.js").dogs
 app.get('/add-dog',async  (req, res) => {
     // const dog = new Dog({
     //     name: "Labrador Retriever",
@@ -203,6 +209,7 @@ app.get('/add-dog',async  (req, res) => {
 })
 */
 /*
+const catsdata = require('./cats.js').cats;
 app.get('/add-cat', (req, res) => {
     // const cat = new Cat({
     //     name: "Labrador Retriever",
@@ -219,7 +226,7 @@ app.get('/add-cat', (req, res) => {
     //     .catch((err) => {
     //         console.log(err)
     //     })
-    cats.forEach(async (item)=>{
+    catsdata.forEach(async (item)=>{
         const ca = new Cat({
             name: item.name,
             diet: item.diet,
@@ -235,6 +242,8 @@ app.get('/add-cat', (req, res) => {
 
 */
 /*
+const birdsdata = require('./birds.js').birds
+
 app.get('/add-bird', (req, res) => {
     // const bird = new Bird({
     //     name: "Labrador Retriever",
@@ -264,8 +273,12 @@ app.get('/add-bird', (req, res) => {
     })
     res.send("success")
 })
+
 */
-/*
+
+
+const fishdata = require('./fish.js').fish
+
 app.get('/add-fish', (req, res) => {
     // const fish = new Fish({
     //     name: "Labrador Retriever",
@@ -295,7 +308,7 @@ app.get('/add-fish', (req, res) => {
     })
     res.send("success")
 })
-*/
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')

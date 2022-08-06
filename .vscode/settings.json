@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/880fc2d3-d11d-4de0-b140-0c3e872d0a9e/microsoft.web/sites/subscriptions/880fc2d3-d11d-4de0-b140-0c3e872d0a9e/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/wildhacksApi",
+    "appService.deploySubpath": "."
+}
