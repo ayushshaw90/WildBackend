@@ -31,13 +31,13 @@ const DogSchema = new Schema({
         required: true,
     }
 },
-{
-    statics:{
-      findByName(dogname){
-        return this.find({ name: dogname});
-      }
-    }
-})
+    {
+        statics: {
+            findByName(dogname) {
+                return this.find({ name: dogname });
+            }
+        }
+    })
 
 const Dog = mongoose.model('Dog', DogSchema);
 
@@ -61,13 +61,13 @@ const CatSchema = new Schema({
         required: true,
     }
 },
-{
-    statics:{
-      findByName(catname){
-        return this.find({ name: catname});
-      }
-    }
-})
+    {
+        statics: {
+            findByName(catname) {
+                return this.find({ name: catname });
+            }
+        }
+    })
 
 const Cat = mongoose.model('Cat', CatSchema);
 
@@ -91,13 +91,13 @@ const BirdSchema = new Schema({
         required: true,
     }
 },
-{
-    statics:{
-      findByName(birdname){
-        return this.find({ name: birdname});
-      }
-    }
-})
+    {
+        statics: {
+            findByName(birdname) {
+                return this.find({ name: birdname });
+            }
+        }
+    })
 
 const Bird = mongoose.model('Bird', BirdSchema);
 
@@ -121,15 +121,30 @@ const FishSchema = new Schema({
         required: true,
     }
 },
-{
-    statics:{
-      findByName(fishname){
-        return this.find({ name: fishname});
-      }
-    }
-})
+    {
+        statics: {
+            findByName(fishname) {
+                return this.find({ name: fishname });
+            }
+        }
+    })
 
 const Fish = mongoose.model('Fish', FishSchema);
+
+const subscriberSchema = new Schema({
+    phno: String
+},
+    {
+        statics: {
+            findByName(number) {
+                return this.find({ phno: number });
+            }
+        }
+    }
+)
+
+const phone = mongoose.model('Subscriber', subscriberSchema)
+
 
 
 const app = express()
@@ -143,20 +158,39 @@ const port = process.env.PORT || 80
 
 //routes
 
+app.post('/addphone', async (req, res) => {
+    let phno = req.body.phno;
+    if(await phone.findByName(phno)){
+        res.json({
+            message: "Already Exists"
+        })
+        res.end();
+        return;
+    }
+    let entry = new phone({
+        phno: phno
+    })
+
+    await entry.save()
+    res.json({
+        message: "Successfully added you to our subscriber list"
+    })
+})
+
 app.post('/getdog', async (req, res) => {
     console.log(req.body)
     let dogname = req.body.name;
     let found = await Dog.findByName(dogname);
     console.log("Dog");
     console.log(found);
-    res.json({responce: found});
+    res.json({ responce: found });
 })
 app.post('/getcat', async (req, res) => {
     let catname = req.body.name;
     let found = await Cat.findByName(catname);
     console.log("Cat");
     console.log(found);
-    res.json({responce: found});
+    res.json({ responce: found });
 })
 
 app.post('/getbird', async (req, res) => {
@@ -164,7 +198,7 @@ app.post('/getbird', async (req, res) => {
     let found = await Bird.findByName(birdname);
     console.log("Bird");
     console.log(found);
-    res.json({responce: found});
+    res.json({ responce: found });
 })
 
 app.post('/getfish', async (req, res) => {
@@ -172,7 +206,7 @@ app.post('/getfish', async (req, res) => {
     let found = await Fish.findByName(fishname);
     console.log("Fish");
     console.log(found);
-    res.json({responce: found});
+    res.json({ responce: found });
 })
 
 
