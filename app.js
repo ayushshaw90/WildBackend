@@ -160,7 +160,8 @@ const port = process.env.PORT || 80
 
 app.post('/addphone', async (req, res) => {
     let phno = req.body.phno;
-    if(await phone.findByName(phno)){
+    const dbres = await phone.findByName(phno);
+    if(dbres.length>0){
         res.json({
             message: "Already Exists"
         })
